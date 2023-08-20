@@ -7,9 +7,7 @@ package dk.sdu.mmmi.cbse.common.data.entityparts;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
-import static dk.sdu.mmmi.cbse.common.data.GameKeys.LEFT;
-import static dk.sdu.mmmi.cbse.common.data.GameKeys.RIGHT;
-import static dk.sdu.mmmi.cbse.common.data.GameKeys.UP;
+
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
@@ -22,19 +20,19 @@ public class MovingPart
         implements EntityPart {
 
     private float dx, dy;
-    private float deceleration, acceleration;
+    private float deacceleration, acceleration;
     private float maxSpeed, rotationSpeed;
     private boolean left, right, up;
 
-    public MovingPart(float deceleration, float acceleration, float maxSpeed, float rotationSpeed) {
-        this.deceleration = deceleration;
+    public MovingPart(float deacceleration, float acceleration, float maxSpeed, float rotationSpeed) {
+        this.deacceleration = deacceleration;
         this.acceleration = acceleration;
         this.maxSpeed = maxSpeed;
         this.rotationSpeed = rotationSpeed;
     }
 
-    public void setDeceleration(float deceleration) {
-        this.deceleration = deceleration;
+    public void setDeacceleration(float deacceleration) {
+        this.deacceleration = deacceleration;
     }
 
     public void setAcceleration(float acceleration) {
@@ -45,6 +43,10 @@ public class MovingPart
         this.maxSpeed = maxSpeed;
     }
 
+    public void setSpeed(float speed) {
+        this.acceleration = speed;
+        this.maxSpeed = speed;
+    }
     public void setRotationSpeed(float rotationSpeed) {
         this.rotationSpeed = rotationSpeed;
     }
@@ -84,11 +86,11 @@ public class MovingPart
             dy += sin(radians) * acceleration * dt;
         }
 
-        // deccelerating
+        // deaccelerating
         float vec = (float) sqrt(dx * dx + dy * dy);
         if (vec > 0) {
-            dx -= (dx / vec) * deceleration * dt;
-            dy -= (dy / vec) * deceleration * dt;
+            dx -= (dx / vec) * deacceleration * dt;
+            dy -= (dy / vec) * deacceleration * dt;
         }
         if (vec > maxSpeed) {
             dx = (dx / vec) * maxSpeed;

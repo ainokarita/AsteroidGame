@@ -10,10 +10,11 @@ import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
+import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.mmmi.cbse.managers.GameInputProcessor;
-import dk.sdu.mmmi.cbse.playersystem.PlayerControlSystem;
-import dk.sdu.mmmi.cbse.playersystem.PlayerPlugin;
+import dk.sdu.mmmi.cbse.common.util.SPILocator;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Game
@@ -23,8 +24,10 @@ public class Game
     private ShapeRenderer sr;
 
     private final GameData gameData = new GameData();
+    //creates an array of each component that needs to be added to the game.
+    //Add IPostEntityProcessingService List for collision detection
     private List<IEntityProcessingService> entityProcessors = new ArrayList<>();
-    private List<IGamePluginService> entityPlugins = new ArrayList<>();
+    private List<IPostEntityProcessingService> postEntityProcessors = new ArrayList<>();
     private World world = new World();
 
     @Override
@@ -43,15 +46,41 @@ public class Game
                 new GameInputProcessor(gameData)
         );
 
+        // Lookup all Game Plugins using ServiceLoader
+        for (IGamePluginService iGamePlugin : getPluginServices()) {
+            iGamePlugin.start(gameData, world);
+        }
+
+/** without service Loader
+        //creates players and enemies in the game.
         IGamePluginService playerPlugin = new PlayerPlugin();
+        entityPlugins.add(playerPlugin);
+
+        //Add enemy to the list by creating enemyPlugin()
+        IGamePluginService enemyPlugin = new EnemyPlugin();
+        entityPlugins.add(enemyPlugin);
+
+        IGamePluginService asteroidPlugin = new AsteroidsPlugin();
+        entityPlugins.add(asteroidPlugin);
 
         IEntityProcessingService playerProcess = new PlayerControlSystem();
-        entityPlugins.add(playerPlugin);
         entityProcessors.add(playerProcess);
+
+        // add enemy to the list by creating a new instance of EnemyControlSystem()
+        IEntityProcessingService enemyProcess = new EnemyControlSystem();
+        entityProcessors.add(enemyProcess);
+
+        IEntityProcessingService asteroidProcess = new AsteroidsControl();
+        entityProcessors.add(asteroidProcess);
+
+        //for collision, after creating Collision class, add it to the IPostEntityProcessingService List
+        //by creating a new instance of CollisionControlSystem of type IPostEntityProcessingService
+
         // Lookup all Game Plugins using ServiceLoader
         for (IGamePluginService iGamePlugin : entityPlugins) {
             iGamePlugin.start(gameData, world);
         }
+ **/
     }
 
     @Override
@@ -72,8 +101,13 @@ public class Game
 
     private void update() {
         // Update
-        for (IEntityProcessingService entityProcessorService : entityProcessors) {
+        for (IEntityProcessingService entityProcessorService : getEntityProcessingServices()) {
             entityProcessorService.process(gameData, world);
+        }
+
+        // Create for loop for PostProcessingService when collision needs to be made
+        for (IPostEntityProcessingService postEntityProcessorService : getPostEntityProcessingServices()) {
+            postEntityProcessorService.process(gameData, world);
         }
     }
 
@@ -112,5 +146,20 @@ public class Game
 
     @Override
     public void dispose() {
+    }
+
+    // Locates and Loops through each service provider interface, and checks their use.
+
+
+    private Collection<? extends IGamePluginService> getPluginServices() {
+        return SPILocator.locateAll(IGamePluginService.class);
+    }
+
+    private Collection<? extends IEntityProcessingService> getEntityProcessingServices() {
+        return SPILocator.locateAll(IEntityProcessingService.class);
+    }
+
+    private Collection<? extends IPostEntityProcessingService> getPostEntityProcessingServices() {
+        return SPILocator.locateAll(IPostEntityProcessingService.class);
     }
 }
