@@ -12,10 +12,13 @@ import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.mmmi.cbse.managers.GameInputProcessor;
-import dk.sdu.mmmi.cbse.common.util.SPILocator;
+//import dk.sdu.mmmi.cbse.common.util.SPILocator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.ServiceLoader;
+
+import static java.util.stream.Collectors.toList;
 
 public class Game
         implements ApplicationListener {
@@ -28,6 +31,7 @@ public class Game
     //Add IPostEntityProcessingService List for collision detection
     private List<IEntityProcessingService> entityProcessors = new ArrayList<>();
     private List<IPostEntityProcessingService> postEntityProcessors = new ArrayList<>();
+    private List<IGamePluginService> entityPlugins = new ArrayList<>();
     private World world = new World();
 
     @Override
@@ -153,14 +157,18 @@ public class Game
 
 
     private Collection<? extends IGamePluginService> getPluginServices() {
-        return SPILocator.locateAll(IGamePluginService.class);
+        //return SPILocator.locateAll(IGamePluginService.class);
+        //instead use ServiceLoader after changing to JPMS:
+        return ServiceLoader.load(IGamePluginService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 
     private Collection<? extends IEntityProcessingService> getEntityProcessingServices() {
-        return SPILocator.locateAll(IEntityProcessingService.class);
+        //return SPILocator.locateAll(IEntityProcessingService.class);
+        return ServiceLoader.load(IEntityProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 
     private Collection<? extends IPostEntityProcessingService> getPostEntityProcessingServices() {
-        return SPILocator.locateAll(IPostEntityProcessingService.class);
+//        return SPILocator.locateAll(IPostEntityProcessingService.class);
+        return ServiceLoader.load(IPostEntityProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 }
