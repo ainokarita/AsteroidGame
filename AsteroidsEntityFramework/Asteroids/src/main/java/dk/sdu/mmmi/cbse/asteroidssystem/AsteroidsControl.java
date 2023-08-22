@@ -6,10 +6,12 @@ import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
+import dk.sdu.mmmi.cbse.common.services.IAsteroidsSplitter;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 
 public class AsteroidsControl implements IEntityProcessingService {
 
+    private IAsteroidsSplitter asteroidsSplitter = new AsteroidsSplitter();
     @Override
     public void process(GameData gameData, World world) {
         for (Entity asteroids : world.getEntities(Asteroids.class)) {
@@ -33,25 +35,25 @@ public class AsteroidsControl implements IEntityProcessingService {
             positionPart.process(gameData, asteroids);
 
             // Split event
-          /**  if (lifePart.isHit()) {
-                asteroidSplitter.createSplitAsteroid(asteroids, world);
-           }**/
+          if (lifePart.isHit()) {
+                asteroidsSplitter.createSplitAsteroid(asteroids, world);
+           }
             setShape(asteroids, numPoints);
         }
     }
 
 
     /**
-     * Dependency Injection using OSGi Declarative Services
+     * Dependency Injection using OSGi Declarative Services **/
 
-    public void setAsteroidSplitter(IAsteroidSplitter asteroidSplitter) {
-        this.asteroidSplitter = asteroidSplitter;
+    public void setAsteroidsSplitter(IAsteroidsSplitter asteroidSplitter) {
+        this.asteroidsSplitter = asteroidSplitter;
     }
 
-    public void removeAsteroidSplitter(IAsteroidSplitter asteroidSplitter) {
-        this.asteroidSplitter = null;
+    public void removeAsteroidsSplitter(IAsteroidsSplitter asteroidsSplitter) {
+        this.asteroidsSplitter = null;
     }
-     **/
+
 
     private void setShape(Entity entity, int numPoints) {
         PositionPart position = entity.getPart(PositionPart.class);

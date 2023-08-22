@@ -71,6 +71,7 @@ public class Game
         entityProcessors.add(enemyProcess);
 
         IEntityProcessingService asteroidProcess = new AsteroidsControl();
+        entityPlugins.add(asteroidPlugin);
         entityProcessors.add(asteroidProcess);
 
         //for collision, after creating Collision class, add it to the IPostEntityProcessingService List
