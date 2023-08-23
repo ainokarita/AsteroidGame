@@ -11,7 +11,7 @@ import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 public class CollisionDetection implements IPostEntityProcessingService{
     @Override
     public void process(GameData gameData, World world) {
-        // two for loops for all entities in the world
+        // two for-loops for all entities in the world
         for (Entity entity : world.getEntities()) {
             for (Entity collisionDetection : world.getEntities()) {
                 // get life parts on all entities
