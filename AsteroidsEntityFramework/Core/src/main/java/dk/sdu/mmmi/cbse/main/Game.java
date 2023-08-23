@@ -80,13 +80,13 @@ public class Game
 
         //for collision, after creating Collision class, add it to the IPostEntityProcessingService List
         //by creating a new instance of CollisionControlSystem of type IPostEntityProcessingService
+        IPostEntityProcessingService collisionDetection = new CollisionDetection();
+        postEntityProcessors.add(collisionDetection);
 
         // Lookup all Game Plugins using ServiceLoader
         for (IGamePluginService iGamePlugin : entityPlugins) {
             iGamePlugin.start(gameData, world);
-        }
- **/
-    }
+        }   **/  }
 
     @Override
     public void render() {
