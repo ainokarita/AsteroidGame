@@ -27,11 +27,12 @@ public class Game
     private ShapeRenderer sr;
 
     private final GameData gameData = new GameData();
+
     //creates an array of each component that needs to be added to the game.
     //Add IPostEntityProcessingService List for collision detection
     private List<IEntityProcessingService> entityProcessors = new ArrayList<>();
     private List<IPostEntityProcessingService> postEntityProcessors = new ArrayList<>();
-    private List<IGamePluginService> entityPlugins = new ArrayList<>();
+    //private List<IGamePluginService> entityPlugins = new ArrayList<>();
     private World world = new World();
 
     @Override
