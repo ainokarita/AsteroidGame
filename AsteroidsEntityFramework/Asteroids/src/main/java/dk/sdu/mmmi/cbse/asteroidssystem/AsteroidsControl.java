@@ -21,7 +21,7 @@ public class AsteroidsControl implements IEntityProcessingService {
 
             int numPoints = 12;
             float speed = (float) Math.random() * 10f + 20f;
-           if (lifePart.getLife() == 1) {
+            if (lifePart.getLife() == 1) {
                 numPoints = 8;
                 speed = (float) Math.random() * 30f + 70f;
             } else if (lifePart.getLife() == 2) {
@@ -35,9 +35,9 @@ public class AsteroidsControl implements IEntityProcessingService {
             positionPart.process(gameData, asteroids);
 
             // Split event
-          if (lifePart.isHit()) {
+            if (lifePart.isHit()) {
                 asteroidsSplitter.createSplitAsteroid(asteroids, world);
-           }
+            }
             setShape(asteroids, numPoints);
         }
     }
@@ -69,7 +69,7 @@ public class AsteroidsControl implements IEntityProcessingService {
         for (int i = 0; i < numPoints; i++) {
             shapex[i] = x + (float) Math.cos(angle + radians) * radius;
             shapey[i] = y + (float) Math.sin(angle + radians) * radius;
-            angle += 2 * 3.1415f / numPoints;
+            angle += 5 * 3.1415f / numPoints;
         }
 
         entity.setShapeX(shapex);

@@ -1,24 +1,25 @@
 package dk.sdu.mmmi.cbse.asteroidssystem;
 
-
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
+import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
-import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
+
 /**
- * @author kkost
+ *
+ * @author corfixen
  */
 public class AsteroidsPlugin implements IGamePluginService {
     private Entity asteroids;
 
-   // public AsteroidsPlugin() {}
+    // public AsteroidsPlugin() {}
 
     @Override
     public void start(GameData gameData, World world) {
-       /**Adding asteroid entities to the world**/
+        /**Adding asteroid entities to the world**/
         asteroids = createAsteroids(gameData);
         world.addEntity(asteroids);
         Entity asteroid = createAsteroids(gameData);

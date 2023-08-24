@@ -8,9 +8,7 @@ package dk.sdu.mmmi.cbse.common.data.entityparts;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-import static java.lang.Math.sqrt;
+import static java.lang.Math.*;
 
 /**
  *
@@ -20,19 +18,27 @@ public class MovingPart
         implements EntityPart {
 
     private float dx, dy;
-    private float deacceleration, acceleration;
+    private float deceleration, acceleration;
     private float maxSpeed, rotationSpeed;
     private boolean left, right, up;
 
-    public MovingPart(float deacceleration, float acceleration, float maxSpeed, float rotationSpeed) {
-        this.deacceleration = deacceleration;
+    public MovingPart(float deceleration, float acceleration, float maxSpeed, float rotationSpeed) {
+        this.deceleration = deceleration;
         this.acceleration = acceleration;
         this.maxSpeed = maxSpeed;
         this.rotationSpeed = rotationSpeed;
     }
 
-    public void setDeacceleration(float deacceleration) {
-        this.deacceleration = deacceleration;
+    public float getDx() {
+        return dx;
+    }
+
+    public float getDy() {
+        return dy;
+    }
+
+    public void setDeceleration(float deceleration) {
+        this.deceleration = deceleration;
     }
 
     public void setAcceleration(float acceleration) {
@@ -47,6 +53,7 @@ public class MovingPart
         this.acceleration = speed;
         this.maxSpeed = speed;
     }
+
     public void setRotationSpeed(float rotationSpeed) {
         this.rotationSpeed = rotationSpeed;
     }
@@ -86,11 +93,11 @@ public class MovingPart
             dy += sin(radians) * acceleration * dt;
         }
 
-        // deaccelerating
+        // deccelerating
         float vec = (float) sqrt(dx * dx + dy * dy);
         if (vec > 0) {
-            dx -= (dx / vec) * deacceleration * dt;
-            dy -= (dy / vec) * deacceleration * dt;
+            dx -= (dx / vec) * deceleration * dt;
+            dy -= (dy / vec) * deceleration * dt;
         }
         if (vec > maxSpeed) {
             dx = (dx / vec) * maxSpeed;
@@ -101,16 +108,14 @@ public class MovingPart
         x += dx * dt;
         if (x > gameData.getDisplayWidth()) {
             x = 0;
-        }
-        else if (x < 0) {
+        } else if (x < 0) {
             x = gameData.getDisplayWidth();
         }
 
         y += dy * dt;
         if (y > gameData.getDisplayHeight()) {
             y = 0;
-        }
-        else if (y < 0) {
+        } else if (y < 0) {
             y = gameData.getDisplayHeight();
         }
 

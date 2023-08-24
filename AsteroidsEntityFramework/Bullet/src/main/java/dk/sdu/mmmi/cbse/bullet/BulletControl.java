@@ -8,13 +8,11 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.TimerPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.BulletPart;
+import dk.sdu.mmmi.cbse.common.services.BulletSPI;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
-
-import java.util.Timer;
-
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
-public class BulletControl implements IEntityProcessingService {
+public class BulletControl implements IEntityProcessingService, BulletSPI {
     /**
      * Processes the entities
      *
@@ -56,6 +54,32 @@ public class BulletControl implements IEntityProcessingService {
 
             updateShape(bullet);
         }
+    }
+    @Override
+    public Entity createBullet(Entity shooter, GameData gameData) {
+        PositionPart shooterPos = shooter.getPart(PositionPart.class);
+
+        float x = shooterPos.getX();
+        float y = shooterPos.getY();
+        float radians = shooterPos.getRadians();
+        float dt = gameData.getDelta();
+        float speed = 350;
+
+        Entity bullet = new Bullet();
+        bullet.setRadius(2);
+
+        float bx = (float) cos(radians) * shooter.getRadius() * bullet.getRadius();
+        float by = (float) sin(radians) * shooter.getRadius() * bullet.getRadius();
+
+        bullet.add(new PositionPart(bx + x, by + y, radians));
+        bullet.add(new LifePart(1, 0));
+        bullet.add(new MovingPart(0, 5000000, speed, 5));
+        bullet.add(new TimerPart(1));
+
+        bullet.setShapeX(new float[2]);
+        bullet.setShapeY(new float[2]);
+
+        return bullet;
     }
 
     private void spawnBullet(World world, float x, float y, float rotation) {

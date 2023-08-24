@@ -8,5 +8,5 @@ module Core {
     uses dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
     uses dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 
- //   requires gdx.backend.lwjgl; // This fixed the issue with clean install not finding libgdx package
+    //   requires gdx.backend.lwjgl; // This fixed the issue with clean install not finding libgdx package
 }

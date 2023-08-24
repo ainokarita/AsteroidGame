@@ -3,22 +3,21 @@ package dk.sdu.mmmi.cbse.enemysystem;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
+import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
-import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import java.util.Random;
 
-/**
- * @author kkost
- */
-
-public class EnemyControlSystem implements IEntityProcessingService{
+public class EnemyControlSystem implements IEntityProcessingService {
 
     private Entity enemy;
+
+    public EnemyControlSystem() {
+    }
+     
     @Override
     public void process(GameData gameData, World world) {
-
 
         for (Entity enemy : world.getEntities(Enemy.class)) {
             PositionPart positionPart = enemy.getPart(PositionPart.class);
@@ -54,8 +53,8 @@ public class EnemyControlSystem implements IEntityProcessingService{
     }
 
     private void updateShape(Entity entity) {
-        float[] shapex = entity.getShapeX();
-        float[] shapey = entity.getShapeY();
+        float[] shapex = new float[4];
+        float[] shapey = new float[4];
         PositionPart positionPart = entity.getPart(PositionPart.class);
         float x = positionPart.getX();
         float y = positionPart.getY();

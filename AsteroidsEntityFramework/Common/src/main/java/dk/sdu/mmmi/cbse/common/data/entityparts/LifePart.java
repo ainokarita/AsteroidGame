@@ -53,7 +53,7 @@ public class LifePart implements EntityPart {
     public boolean isDead() {
         return dead;
     }
-    
+
     @Override
     public void process(GameData gameData, Entity entity) {
         if (isHit) {
@@ -63,6 +63,6 @@ public class LifePart implements EntityPart {
         if (life <= 0) {
             dead = true;
         }
-        
+
     }
 }
