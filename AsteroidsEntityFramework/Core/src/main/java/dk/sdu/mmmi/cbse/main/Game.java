@@ -17,17 +17,34 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ServiceLoader;
 import static java.util.stream.Collectors.toList;
+import dk.sdu.mmmi.cbse.services.EntityProcessor;
+import dk.sdu.mmmi.cbse.services.Plugin;
+import dk.sdu.mmmi.cbse.services.PostEntityProcessor;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 
+@Component("game")
 public class Game
         implements ApplicationListener {
 
     private static OrthographicCamera cam;
     private ShapeRenderer sr;
 
+    private AnnotationConfigApplicationContext annotationConfigApplicationContext;
+
+
     private final GameData gameData = new GameData();
     private List<IEntityProcessingService> entityProcessors = new ArrayList<>();
     private List<IPostEntityProcessingService> postEntityProcessors = new ArrayList<>();
     private World world = new World();
+
+    public Game(){
+        this.annotationConfigApplicationContext = new AnnotationConfigApplicationContext();
+        this.annotationConfigApplicationContext.scan("dk.sdu.mmmi.cbse.services");
+        this.annotationConfigApplicationContext.refresh();
+    }
 
     @Override
     public void create() {
@@ -45,10 +62,12 @@ public class Game
                 new GameInputProcessor(gameData)
         );
 
-        // Lookup all Game Plugins using ServiceLoader
+        /** Lookup all Game Plugins using ServiceLoader
         for (IGamePluginService iGamePlugin : getPluginServices()) {
             iGamePlugin.start(gameData, world);
-        }
+        }**/
+        // Lookup all Game Plugins using Spring
+        ((Plugin) annotationConfigApplicationContext.getBean("plugin")).startPlugins(gameData,world);
     }
 
     @Override
@@ -68,13 +87,17 @@ public class Game
     }
 
     private void update() {
-        // Update
+        /** Update JPMS
         for (IEntityProcessingService entityProcessorService : getEntityProcessingServices()) {
             entityProcessorService.process(gameData, world);
         }
          for (IPostEntityProcessingService postEntityProcessorService : getPostEntityProcessingServices()) {
             postEntityProcessorService.process(gameData, world);
-        }
+        }**/
+
+        //Update Spring
+        ((EntityProcessor) annotationConfigApplicationContext.getBean("entityProcessor")).process(gameData,world);
+        ((PostEntityProcessor) annotationConfigApplicationContext.getBean("postEntityProcessor")).process(gameData,world);
     }
 
     private void draw() {
