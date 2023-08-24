@@ -30,11 +30,11 @@ public class PlayerControlSystem implements IEntityProcessingService {
             movingPart.setRight(gameData.getKeys().isDown(GameKeys.RIGHT));
             movingPart.setUp(gameData.getKeys().isDown(GameKeys.UP));
 
-            if (gameData.getKeys().isDown(GameKeys.SPACE)) {
+           /** if (gameData.getKeys().isDown(GameKeys.SPACE)) {
                 for (BulletSPI bullet : getBulletSPIs()) {
                     world.addEntity(bullet.createBullet(player, gameData));
                 }                                            
-            }
+            } **/
 
             movingPart.process(gameData, player);
             positionPart.process(gameData, player);
@@ -53,23 +53,23 @@ public class PlayerControlSystem implements IEntityProcessingService {
         float y = positionPart.getY();
         float radians = positionPart.getRadians();
 
-        shapex[0] = (float) (x + Math.cos(radians) * 8);
-        shapey[0] = (float) (y + Math.sin(radians) * 8);
+        shapex[0] = (float) (x + Math.cos(radians) * 16);
+        shapey[0] = (float) (y + Math.sin(radians) * 16);
 
-        shapex[1] = (float) (x + Math.cos(radians - 4 * 3.1415f / 5) * 8);
-        shapey[1] = (float) (y + Math.sin(radians - 4 * 3.1145f / 5) * 8);
+        shapex[1] = (float) (x + Math.cos(radians - 4 * 3.1415f / 5) * 16);
+        shapey[1] = (float) (y + Math.sin(radians - 4 * 3.1145f / 5) * 16);
 
-        shapex[2] = (float) (x + Math.cos(radians + 3.1415f) * 5);
-        shapey[2] = (float) (y + Math.sin(radians + 3.1415f) * 5);
+        shapex[2] = (float) (x + Math.cos(radians + 3.1415f) * 16);
+        shapey[2] = (float) (y + Math.sin(radians + 3.1415f) * 16);
 
-        shapex[3] = (float) (x + Math.cos(radians + 4 * 3.1415f / 5) * 8);
-        shapey[3] = (float) (y + Math.sin(radians + 4 * 3.1415f / 5) * 8);
+        shapex[3] = (float) (x + Math.cos(radians + 4 * 3.1415f / 5) * 16);
+        shapey[3] = (float) (y + Math.sin(radians + 4 * 3.1415f / 5) * 16);
 
         entity.setShapeX(shapex);
         entity.setShapeY(shapey);
     }
 
-    private Collection<? extends BulletSPI> getBulletSPIs() {
+  /**  private Collection<? extends BulletSPI> getBulletSPIs() {
         return ServiceLoader.load(BulletSPI.class).stream().map(ServiceLoader.Provider::get).collect(toList());
-    }
+    }**/
 }

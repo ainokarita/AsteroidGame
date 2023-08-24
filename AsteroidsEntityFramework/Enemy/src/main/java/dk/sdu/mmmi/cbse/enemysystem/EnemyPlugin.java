@@ -9,11 +9,13 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 
+import java.util.Random;
+
 public class EnemyPlugin implements IGamePluginService {
   
     private Entity enemy;
 
-  //  public EnemyPlugin() {}
+    public EnemyPlugin() {}
 
    
     
@@ -28,11 +30,11 @@ public class EnemyPlugin implements IGamePluginService {
     private Entity createEnemyShip(GameData gameData) {
 
         float deacceleration = 10;
-        float acceleration = 150;
+        float acceleration = 50;
         float maxSpeed = 200;
         float rotationSpeed = 5;
-        float x = gameData.getDisplayWidth()/2;
-        float y = gameData.getDisplayHeight()/2;
+        float x = new Random().nextFloat() * gameData.getDisplayWidth();
+        float y = new Random().nextFloat() * gameData.getDisplayHeight();
         float radians = 3.1415f / 2;
 
         float[] colour = new float[4];

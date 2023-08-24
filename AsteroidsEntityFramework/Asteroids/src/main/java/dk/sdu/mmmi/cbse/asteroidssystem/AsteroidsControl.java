@@ -43,18 +43,6 @@ public class AsteroidsControl implements IEntityProcessingService {
     }
 
 
-    /**
-     * Dependency Injection using OSGi Declarative Services **/
-
-    public void setAsteroidsSplitter(IAsteroidsSplitter asteroidSplitter) {
-        this.asteroidsSplitter = asteroidSplitter;
-    }
-
-    public void removeAsteroidsSplitter(IAsteroidsSplitter asteroidsSplitter) {
-        this.asteroidsSplitter = null;
-    }
-
-
     private void setShape(Entity entity, int numPoints) {
         PositionPart position = entity.getPart(PositionPart.class);
         float[] shapex = new float[numPoints];
@@ -69,7 +57,7 @@ public class AsteroidsControl implements IEntityProcessingService {
         for (int i = 0; i < numPoints; i++) {
             shapex[i] = x + (float) Math.cos(angle + radians) * radius;
             shapey[i] = y + (float) Math.sin(angle + radians) * radius;
-            angle += 5 * 3.1415f / numPoints;
+            angle += 25 * 3.1415f / numPoints;
         }
 
         entity.setShapeX(shapex);

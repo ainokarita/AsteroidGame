@@ -26,7 +26,7 @@ public class PlayerPlugin implements IGamePluginService {
     private Entity createPlayerShip(GameData gameData) {
 
         float deacceleration = 10;
-        float acceleration = 200;
+        float acceleration = 100;
         float maxSpeed = 300;
         float rotationSpeed = 5;
         float x = gameData.getDisplayWidth() / 2;
@@ -38,7 +38,7 @@ public class PlayerPlugin implements IGamePluginService {
         playerShip.add(new MovingPart(deacceleration, acceleration, maxSpeed, rotationSpeed));
         playerShip.add(new PositionPart(x, y, radians));
         playerShip.add(new LifePart(1, 0));
-        playerShip.add(new BulletPart(30));
+        playerShip.add(new BulletPart(15));
 
         return playerShip;
     }
